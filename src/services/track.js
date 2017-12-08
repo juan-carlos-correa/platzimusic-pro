@@ -1,8 +1,6 @@
 import platziMusicServices from './platzi-music'
 
-const trackService = {
-
-}
+const trackService = {}
 
 trackService.search = function (q) {
   const type = 'track'
@@ -10,7 +8,7 @@ trackService.search = function (q) {
   return platziMusicServices.get('/search', {
     params: { q, type }
   })
-  .then(res => res.data)
+    .then(res => res.data)
 }
 
-export default trackService;
+export default trackService
