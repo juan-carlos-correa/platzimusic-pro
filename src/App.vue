@@ -1,47 +1,60 @@
 <template lang="pug">
   #app
-    label(for='yearBirthday') Año de nacimiento
-    input(v-model="yearBirthday" id='yearBirthday')
-    p(v-if="yearBirthday") Tú edad: {{ age }}
-    p Valor anterior: {{ oldVal }}
-    p Valor nuevo: {{ newVal }}
+    section.section
+      nav.nav.has-shadow
+        .container
+          input.input.is-large(
+            type="text",
+            placeholder="Buscar canciones"
+            v-model="searchQuery"
+          )
+          a.button.is-info.is-large(@click="search") Buscar
+          a.button.is-danger.is-large &times;
+          p
+            small {{ searchMessage }}
+
+      .container.results
+        .columns
+          .column(v-for="t in tracks") {{ t.name }} - {{ t.artist }}
 </template>
 
 <script>
+const tracks = [
+  {
+    name: 'The Wall', artist: 'Pink Floyd'
+  },
+  {
+    name: 'We are the champions', artist: 'Queen'
+  }
+]
+
 export default {
   name: 'app',
   data () {
     return {
-      yearBirthday: 0,
-      oldVal: 0,
-      newVal: 0
+      searchQuery: '',
+      tracks: []
     }
   },
 
-  /**
-   * funciones que generan nuevas propiedades del componente en base a otras propiedades.
-   * Deben ser funciones, se pueden usar como expresiones en la UI
-   */
+  methods: {
+    search () {
+      this.tracks = tracks
+    }
+  },
+
   computed: {
-    age () {
-      return (new Date().getFullYear()) - this.yearBirthday
-    }
-  },
-
-  /**
-   * Semejante al patrón Observer
-   * No devuelven un valor, no son propiedades y tampoco pueden ser usadas en propiedades
-   */
-  watch: {
-    age (newVal, oldVal) {
-      console.log(newVal, oldVal)
-      this.oldVal = oldVal
-      this.newVal = newVal
+    searchMessage () {
+      return `Encontrados: ${this.tracks.length}`
     }
   }
 }
 </script>
 
 <style lang="scss">
-  @import './scss/main.scss'
+  @import './scss/main.scss';
+
+  .results {
+    margin-top: 50px
+  }
 </style>
