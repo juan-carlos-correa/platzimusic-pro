@@ -20,6 +20,8 @@
           .level-left
             a.level-item
               span.icon.is-small
+                i.fa.fa-play
+
 </template>
 
 <script>
