@@ -2,14 +2,21 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
+  entry: './src/main.js', // Archivo de entrada a partir del cuál se iniciará el bundle
+
+  output: { // Dónde se generará el resultado
+    path: path.resolve(__dirname, './dist'), //ruta donde se generará el bundle
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: 'build.js' // nombre archivo que se generará
   },
   module: {
-    rules: [
+    rules: [ // Reglas de transformaciones entre entrada y salida (procesos intermedios)
+      {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [path.resolve(__dirname, './src')]
+      },
       {
         test: /\.css$/,
         use: [
@@ -34,14 +41,14 @@ module.exports = {
         ],
       },
       {
-        test: /\.vue$/,
-        loader: 'vue-loader',
+        test: /\.vue$/, // Regular expresion para indicar qué archivos se les aplicará esta regla
+        loader: 'vue-loader', // Transforma archivos .vue a .js
         options: {
           loaders: {
             // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this necessary.
-            'scss': [
+            'scss': [ // Config de loaders internos
               'vue-style-loader',
               'css-loader',
               'sass-loader'
@@ -77,7 +84,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true,
+    noInfo: false,
     overlay: true
   },
   performance: {
